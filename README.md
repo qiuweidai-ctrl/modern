@@ -111,3 +111,21 @@ Group name: student_group
 Description: student_group
 ------------------------
 Number of members added 1
+
+
+
+## Task 6: Check user and group information
+### Commands:
+```bash
+ipa user-show student
+ipa group-show student_group
+
+
+
+User login: student
+First name: Student
+Last name: User
+Group memberships: student_group
+
+Group name: student_group
+Members: student
