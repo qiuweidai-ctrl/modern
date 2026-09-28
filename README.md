@@ -145,3 +145,14 @@ First name: Student
 Last name: User
 City: Grodno
 Group memberships: student_group
+
+
+
+
+## Task 8: Remove user from group
+### Commands:
+```bash
+ipa group-remove-member student_group --users=student
+
+
+Number of members removed 1
