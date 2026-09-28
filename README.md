@@ -45,3 +45,23 @@ To                         Action      From
 464/udp                    ALLOW       Anywhere
 
 
+## Task 2: Install and run FreeIPA
+### Commands:
+```bash
+apt update -y
+apt install freeipa-server -y
+ipa-server-install
+
+
+The IPA Master Server will be configured with:
+Hostname: ipa-server.ipa.local
+IP address: 127.0.0.1
+Domain name: ipa.local
+Realm name: IPA.LOCAL
+
+Continue to configure the system with these values? [no]: yes
+
+The ipa-server-install command was successful
+
+
+
