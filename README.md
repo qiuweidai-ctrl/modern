@@ -129,3 +129,19 @@ Group memberships: student_group
 
 Group name: student_group
 Members: student
+
+
+
+
+## Task 7: Modify user information
+### Commands:
+```bash
+ipa user-mod student --city=Grodno
+
+
+Modified user "student"
+User login: student
+First name: Student
+Last name: User
+City: Grodno
+Group memberships: student_group
