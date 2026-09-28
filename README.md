@@ -1,171 +1,125 @@
-# Practical sessions 2,3,4
+# Practical work: FreeIPA user and group management
+This practical work demonstrates FreeIPA server installation, client enrollment, certificate management and SSH authentication. All operations are prepared for Ubuntu Linux environment.
 
-## Task 1. Install Git
-Command:
-```bash
-apt update
-apt install git -y
-# modern
-modern programmming platforms
-
-
-# Practical sessions 5, 6: Installing and Using FreeIPA
-
-## 1. Configure the firewall
-Open required ports for FreeIPA service in firewall.
-```bash
-# Install firewall tool
-apt install ufw -y
-# Allow FreeIPA required ports
-ufw allow 80/tcp
-ufw allow 443/tcp
-ufw allow 389/tcp
-ufw allow 636/tcp
-ufw allow 88/tcp
-ufw allow 464/tcp
-ufw allow 53/tcp
-ufw allow 88/udp
-ufw allow 464/udp
-# Enable firewall
-ufw enable
-# Check firewall status
-ufw status
-
-Status: active
-To                         Action      From
---                         ------      ----
-80/tcp                     ALLOW       Anywhere
-443/tcp                    ALLOW       Anywhere
-389/tcp                    ALLOW       Anywhere
-636/tcp                    ALLOW       Anywhere
-88/tcp                     ALLOW       Anywhere
-464/tcp                    ALLOW       Anywhere
-53/tcp                     ALLOW       Anywhere
-88/udp                     ALLOW       Anywhere
-464/udp                    ALLOW       Anywhere
-
-
-## Task 2: Install and run FreeIPA
+## Task 1: Configure the firewall
 ### Commands:
 ```bash
-apt update -y
-apt install freeipa-server -y
-ipa-server-install
+sudo firewall-cmd --add-service={http,https,dns,ldap,ldaps,kerberos,kpasswd} --permanent
+sudo firewall-cmd --reload
+sudo firewall-cmd --list-services
 
 
-The IPA Master Server will be configured with:
-Hostname: ipa-server.ipa.local
-IP address: 127.0.0.1
-Domain name: ipa.local
-Realm name: IPA.LOCAL
+Expected output:
 
-Continue to configure the system with these values? [no]: yes
-
-The ipa-server-install command was successful
+success
+success
+http https dns ldap ldaps kerberos kpasswd
 
 
+## Task 2: Install and run FreeIPA server
+### Comands:
+```bash
+sudo dnf install ipa-server ipa-server-dns -y
+sudo ipa-server-install
+ipa server status
 
-## Task 3: Configure and connect the client
+
+Expected output:
+
+Installation completed successfully
+Server is configured and running.
+IPA server: READY
+
+
+## Task 3: Configure and connect the client to FreeIPA domain
 ### Commands:
 ```bash
-apt update -y
-apt install freeipa-client -y
-ipa-client-install --domain=ipa.local --realm=IPA.LOCAL --server=ipa-server.ipa.local
+sudo ipa-client-install --domain=ipa.local --server=server.ipa.local
+ipa user-find
 
 
+Expected output:
 
-Provide the administrator credentials to join the domain:
-Username: admin
-Password: ********
-Successfully enrolled client "client.ipa.local"
-The ipa-client-install command was successful
-
+Client enrolled into IPA domain ipa.local successfully
+Discovery of server completed.
+User list displayed.
 
 
-## Task 4: Create user
+## Task 4: Create and test the user
 ### Commands:
 ```bash
-ipa user-add student --first=Student --last=User --password
+ipa user-add student --first=Student --last=User
+ipa user-show student
 
 
-Password:
-Enter password again to verify:
+Expected output:
+
 Added user "student"
------------------------
 User login: student
 First name: Student
 Last name: User
-Full name: Student User
 
 
 
-
-## Task 5: Create group and add user to group
+## Task 5: Create a security group
 ### Commands:
 ```bash
 ipa group-add student_group
 ipa group-add-member student_group --users=student
-
-Added group "student_group"
-Group name: student_group
-Description: student_group
-------------------------
-Number of members added 1
-
-
-
-## Task 6: Check user and group information
-### Commands:
-```bash
-ipa user-show student
 ipa group-show student_group
 
 
+Expected output:
 
-User login: student
-First name: Student
-Last name: User
-Group memberships: student_group
-
+Added group "student_group"
+Group members added.
 Group name: student_group
 Members: student
 
 
 
-
-## Task 7: Modify user information
+## Task 6: Issue a certificate for the computer
 ### Commands:
 ```bash
-ipa user-mod student --city=Grodno
+ipa-getcert request -f /etc/pki/tls/certs/client.crt -k /etc/pki/tls/private/client.key -N CN=client.ipa.local
+ipa-getcert list
 
 
-Modified user "student"
-User login: student
-First name: Student
-Last name: User
-City: Grodno
-Group memberships: student_group
+Expected output:
+
+New signing request "20260928152000" added.
+Status: MONITORING
+Storing key in /etc/pki/tls/private/client.key
+Storing cert in /etc/pki/tls/certs/client.crt
+Certificate issued successfully
 
 
 
+## Task 7: Perform SSH authentication via FreeIPA
+### Commands:
+kinit student
+ssh -GSSAPIAuthentication yes student@client.ipa.local
+klist
 
-## Task 8: Remove user from group
+
+Expected output:
+
+Password for student@IPA.LOCAL:
+Ticket cache obtained successfully
+Connected to client.ipa.local without password prompt
+Valid Kerberos tickets are listed in klist output
+
+
+
+## Task 8: Remove the client from the domain
 ### Commands:
 ```bash
-ipa group-remove-member student_group --users=student
+ipa-client-install --uninstall
 
 
-Number of members removed 1
+Expected output:
 
-
-
-
-## Task 9: Delete user and group
-### Commands:
-```bash
-ipa user-del student
-ipa group-del student_group
-
-
-Deleted user "student"
-Deleted group "student_group"
+Unenrolling client from IPA server
+Removing IPA client configuration
+Client uninstall complete.
+System restored to pre‑IPA state
