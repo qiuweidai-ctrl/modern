@@ -156,3 +156,16 @@ ipa group-remove-member student_group --users=student
 
 
 Number of members removed 1
+
+
+
+
+## Task 9: Delete user and group
+### Commands:
+```bash
+ipa user-del student
+ipa group-del student_group
+
+
+Deleted user "student"
+Deleted group "student_group"
