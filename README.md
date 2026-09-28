@@ -65,3 +65,49 @@ The ipa-server-install command was successful
 
 
 
+## Task 3: Configure and connect the client
+### Commands:
+```bash
+apt update -y
+apt install freeipa-client -y
+ipa-client-install --domain=ipa.local --realm=IPA.LOCAL --server=ipa-server.ipa.local
+
+
+
+Provide the administrator credentials to join the domain:
+Username: admin
+Password: ********
+Successfully enrolled client "client.ipa.local"
+The ipa-client-install command was successful
+
+
+
+## Task 4: Create user
+### Commands:
+```bash
+ipa user-add student --first=Student --last=User --password
+
+
+Password:
+Enter password again to verify:
+Added user "student"
+-----------------------
+User login: student
+First name: Student
+Last name: User
+Full name: Student User
+
+
+
+
+## Task 5: Create group and add user to group
+### Commands:
+```bash
+ipa group-add student_group
+ipa group-add-member student_group --users=student
+
+Added group "student_group"
+Group name: student_group
+Description: student_group
+------------------------
+Number of members added 1
