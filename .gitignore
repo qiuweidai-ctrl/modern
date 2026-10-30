@@ -1,0 +1,2 @@
+# Uncompressed image archives are temporary: the compressed archive is tracked.
+*.tar

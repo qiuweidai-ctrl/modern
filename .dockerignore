@@ -1,0 +1,7 @@
+# Files that must not be sent to the Docker daemon as part of the build context.
+.git
+.gitignore
+image/
+*.tar
+*.tar.gz
+README.md

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Laboratory work 4 &mdash; Alpine + nginx + MariaDB</title>
+  <style>
+    body { font-family: system-ui, Segoe UI, Arial, sans-serif; margin: 2rem auto;
+           max-width: 46rem; color: #1f2937; line-height: 1.5; }
+    h1   { color: #1f3864; margin-bottom: .25rem; }
+    .sub { color: #6b7280; margin-top: 0; }
+    table { border-collapse: collapse; width: 100%; margin: 1.5rem 0; }
+    th, td { border: 1px solid #d1d5db; padding: .5rem .75rem; text-align: left; }
+    th { background: #1f3864; color: #fff; }
+    td code { background: #f3f4f6; padding: .1rem .3rem; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <h1>Laboratory work 4</h1>
+  <p class="sub">A local Docker image with a web server and a relational database.</p>
+
+  <p>This page is served by <strong>nginx</strong> from inside the image
+     <code>lab4-alpine-nginx-mariadb:1.0</code>.</p>
+
+  <table>
+    <tr><th>Layer</th><th>Component</th><th>Role</th></tr>
+    <tr><td>Operating system</td><td>Alpine Linux 3.20</td><td>base image</td></tr>
+    <tr><td>Web server</td><td>nginx</td><td>serves this page on port 80</td></tr>
+    <tr><td>Database</td><td>MariaDB</td><td>relational database on port 3306</td></tr>
+  </table>
+
+  <p><a href="/db-status.html">Open the database status page &rarr;</a></p>
+</body>
+</html>

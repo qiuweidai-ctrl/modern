@@ -1,0 +1,13 @@
+# ---------------------------------------------------------------------------
+# Laboratory work 4 - MariaDB configuration drop-in.
+#
+# The stock Alpine package ships /etc/my.cnf.d/mariadb-server.cnf with
+# "skip-networking" in its [mysqld] section, so the server would only accept
+# connections through the local socket.  Files in /etc/my.cnf.d are read in
+# alphabetical order and a later value overrides an earlier one, therefore
+# this "zz-" drop-in re-enables the TCP listener on port 3306.
+# ---------------------------------------------------------------------------
+[mysqld]
+skip-networking = 0
+bind-address    = 0.0.0.0
+port            = 3306

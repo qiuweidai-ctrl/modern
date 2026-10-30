@@ -1,0 +1,12 @@
+# Keep LF line endings in the working tree: the shell script and the
+# configuration files are used inside a Linux container and must not be
+# converted to CRLF on Windows checkouts.
+* text=auto eol=lf
+
+*.sh       text eol=lf
+*.cnf      text eol=lf
+Dockerfile text eol=lf
+
+# The exported image is a binary artefact.
+*.tar    binary
+*.tar.gz binary
